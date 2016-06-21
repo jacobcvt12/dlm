@@ -45,8 +45,13 @@ for (i in seq(2, length(Y))) {
 }
 
 # simulate random walk with noise
-# y_t = \theta_t + v_t, v_t \sim N(0, V)
-# \theta_t = \theta_{t-1} + w_t, w_t \sim N(0, W)
+## y_t = \theta_t + v_t, v_t \sim N(0, V)
+## \theta_t = \theta_{t-1} + w_t, w_t \sim N(0, W)
+v <- 4.5
+sigma.w <- sqrt(0.9)
+w.t <- rnorm(n, 0, sigma.w)
+#theta.t <- 
+epsilon.t <- rnorm(n, 0, sigma)
 v.t <- rnorm(1000, 0, 2)
 w.t <- rnorm(1000, 0, 1)
 
