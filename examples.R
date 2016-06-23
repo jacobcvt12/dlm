@@ -66,8 +66,3 @@ for (i in 2:n) {
 }
 
 y.t <- theta.t + epsilon.t
-
-# priors
-
-C.0 * (Y[1] - m.0) / (1.24 - m.0) - C.0
-
