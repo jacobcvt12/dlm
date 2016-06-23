@@ -66,3 +66,51 @@ for (i in 2:n) {
 }
 
 y.t <- theta.t + epsilon.t
+
+# simulate (2.6)
+set.seed(1)
+n <- 100
+sigma.b <- 1.17
+sigma.u <- 1.3
+V <- 12.6
+beta <- c(1.5, rep(0, n-1))
+mu <- c(14.3, rep(0, n-1))
+
+w.t.1 <- rnorm(n, 0, sigma.u)
+w.t.2 <- rnorm(n, 0, sigma.b)
+v.t <- rnorm(n, 0, sqrt(V))
+
+Y.t <- c(mu + v.t)
+
+for (i in 2:n) {
+    beta[i] <- beta[i - 1] + w.t.2[i]
+    mu[i] <- mu[i-1] + beta[i-1] + w.t.1[i]
+    Y.t[i] <- mu[i] + v.t[i] 
+}
+
+plot(Y.t)
+
+# now write in using matrix notation
+library(mvtnorm)
+set.seed(1)
+n <- 100
+sigma.b <- 1.17
+sigma.u <- 1.3
+V <- 12.6
+theta.t <- rbind(rep(1.5, n), 
+                 rep(14.3, n))
+G <- matrix(c(1, 0, 1, 1), nrow=2)
+W <- diag(c(sigma.u^2, sigma.b^2))
+F <- c(1, 0)
+
+w.t <- t(rmvnorm(n, sigma=W))
+v.t <- rnorm(n, 0, sqrt(V))
+
+Y.t <- F %*% theta.t + v.t
+
+for (i in 2:n) {
+    theta.t[, i] <- G %*% theta.t[, i-1] + cbind(w.t[, i-1])
+    Y.t[i] <- F %*% theta.t[, i] + v.t[i]
+}
+
+plot(as.vector(Y.t))
